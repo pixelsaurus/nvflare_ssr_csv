@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "server": {
+    "heart_beat_timeout": 600
+  },
+  "task_data_filters": [],
+  "task_result_filters": [],
+  "components": [
+    {
+      "id": "aggregator",
+      "path": "aggregator.ssr_aggregator.SSRAggregator",
+      "args": {
+      }
+    }
+  ],
+  "workflows": [
+    {
+      "id": "ssr_workflow",
+      "path": "workflow.ssr_workflow.SSRWorkflow",
+      "args": {
+        "aggregator_id": "aggregator"
+      }
+    }
+  ]
+}

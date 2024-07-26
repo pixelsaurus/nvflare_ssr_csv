@@ -1,0 +1,19 @@
+{
+  "format_version": 2,
+  "executors": [
+    {
+      "tasks": [
+        "local1",
+        "local2",
+        "local3"
+      ],
+      "executor": {
+        "path": "executor.ssr_executor.SSRExecutor",
+        "args": {}
+      }
+    }
+  ],
+  "task_result_filters": [],
+  "task_data_filters": [],
+  "components": []
+}
