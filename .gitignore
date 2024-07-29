@@ -3,3 +3,4 @@ __pycache__/
 simulator_workspace/
 test_results/simulate_job/
 poc-workspace/
+.DS_Store
