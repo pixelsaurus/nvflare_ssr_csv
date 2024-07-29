@@ -44,7 +44,7 @@ class SSRWorkflow(Controller):
 
     def control_flow(self, abort_signal: Signal, fl_ctx: FLContext) -> None:
         fl_ctx.set_prop(key="CURRENT_ROUND", value=0)
-        fl_ctx.set_prop(key="AGGR_CACHE", value={})
+        fl_ctx.set_prop(key="REMOTE_CACHE", value={})
 
         # load parameters.json and set to the context that will be shared with clients
         parameters_file_path = self.get_parameters_file_path()
@@ -56,7 +56,7 @@ class SSRWorkflow(Controller):
         fl_ctx.set_prop(key="COMPUTATION_PARAMETERS",
                         value=computation_parameters, private=False, sticky=True)
 
-        # create the initial task
+        # create the initial local task
         local1 = Task(
             name="local1",
             data=Shareable(),
@@ -75,17 +75,18 @@ class SSRWorkflow(Controller):
             abort_signal=abort_signal,
         )
 
-        # once the all responses are returned, start the aggregation process
+        # once the all responses are returned, start the initial remote aggregation process
         self.log_info(fl_ctx, "Start aggregation.")
         aggr_shareable = self.aggregator.aggregate(fl_ctx)
-        fl_ctx.set_prop(key="AGGR_CACHE", value=aggr_shareable['result']['cache'])
+        # Get and Set values for Aggregator (Remote) persistent data (Cache)
+        fl_ctx.set_prop(key="REMOTE_CACHE", value=aggr_shareable['result']['cache'])
         self.log_info(fl_ctx, "Aggregation Finished.")
 
         fl_ctx.set_prop(key="CURRENT_ROUND", value=1)
 
         aggr_shareable['cache'] = fl_ctx.get_prop("LOCAL_CACHE")
 
-        # create a task to accept the global average
+        # create the local2 task
         local2 = Task(
             name="local2",
             data=aggr_shareable,
@@ -95,7 +96,7 @@ class SSRWorkflow(Controller):
             result_received_cb=self._accept_site_result,
         )
 
-        # broadcast the global average to all clients
+        # broadcast the local2 task to all clients
         self.broadcast_and_wait(
             task=local2,
             min_responses=self._min_clients,
@@ -104,21 +105,21 @@ class SSRWorkflow(Controller):
             abort_signal=abort_signal,
         )
 
-        # once the all responses are returned, start the aggregation process
+        # once the all responses are returned, start the 2nd remote aggregation process
         self.log_info(fl_ctx, "Start aggregation.")
         aggr_shareable = self.aggregator.aggregate(fl_ctx)
+        # No more need for persistent data (Cache) values from here on...
         self.log_info(fl_ctx, "Aggregation Finished.")
 
-        # create a task to accept the global average
+        # create a task to accept the results of the 2nd remote process
         local3 = Task(
             name="local3",
             data=aggr_shareable,
             props={},
             timeout=self._train_timeout,
-            # before_task_sent_cb=self._prepare_train_task_data,
         )
 
-        # broadcast the task to all clients and await their responses
+        # broadcast the task to all clients to generate the html based run results
         self.broadcast_and_wait(
             task=local3,
             min_responses=self._min_clients,
@@ -129,7 +130,8 @@ class SSRWorkflow(Controller):
 
     def _accept_site_result(self, client_task: ClientTask, fl_ctx: FLContext) -> bool:
         accepted = self.aggregator.accept(client_task.result, fl_ctx)
-        result = client_task.result['result'];
+        result = client_task.result['result']
+        # get and set persistent data (cache) for locals
         fl_ctx.set_prop(key="LOCAL_CACHE",value=result['cache'])
         return accepted
 

@@ -5,8 +5,6 @@ from nvflare.apis.shareable import Shareable
 from nvflare.apis.signal import Signal
 
 import os
-import json
-import shutil
 from .output import generateOutput
 
 from .local_funcs import local_1, local_2

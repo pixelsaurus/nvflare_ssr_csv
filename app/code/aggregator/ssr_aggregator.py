@@ -66,7 +66,7 @@ class SSRAggregator(Aggregator):
                 outgoing_shareable['result'] = remote_input
                 return outgoing_shareable
             if(contribution_round == 1):
-                cache = fl_ctx.get_prop(key="AGGR_CACHE")
+                cache = fl_ctx.get_prop(key="REMOTE_CACHE")
                 remote_input = remote_2(data_for_aggregation, cache)
                 outgoing_shareable = Shareable()
                 outgoing_shareable['result'] = remote_input
