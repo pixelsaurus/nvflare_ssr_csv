@@ -172,14 +172,14 @@ class SSRWorkflow(Controller):
 
     def validate_parameters(self, parameters: dict) -> None:
         try:
-            if 'y_headers' not in parameters:
+            if 'Dependents' not in parameters:
                 raise ValueError("Validation Error: The key 'y_headers' is missing in the parameters.")
-            if not isinstance(parameters['y_headers'], (list)):
-                raise ValueError("Validation Error: The value of 'y_headers' must be a number.")
-            if 'X_headers' not in parameters:
+            if not isinstance(parameters['Dependents'], (dict)):
+                raise ValueError("Validation Error: The value of 'Dependents' must be an object.")
+            if 'Covariates' not in parameters:
                 raise ValueError("Validation Error: The key 'X_headers' is missing in the parameters.")
-            if not isinstance(parameters['X_headers'], (list)):
-                raise ValueError("Validation Error: The value of 'X_headers' must be a number.")
+            if not isinstance(parameters['Covariates'], (dict)):
+                raise ValueError("Validation Error: The value of 'Covariates' must be an object.")
             if 'Lambda' not in parameters:
                 raise ValueError("Validation Error: The key 'Lambda' is missing in the parameters.")
             if not isinstance(parameters['Lambda'], (int)):

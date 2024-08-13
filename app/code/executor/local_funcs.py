@@ -18,9 +18,16 @@ def local_1(fl_ctx, data_dir_path):
     cf = pd.read_csv(os.path.join(covariate_file_filepath))
     print(f"loading data from: {covariate_file_filepath}")
 
-    X_headers = computation_parameters["X_headers"]
-    y_headers = computation_parameters["y_headers"]
+    X_vars = computation_parameters["Covariates"]
+    y_vars = computation_parameters["Dependents"]
     lamb = computation_parameters["Lambda"]
+
+    X_headers = list(X_vars.keys())
+    y_headers = list(y_vars.keys())
+    X_types = list(X_vars.values())
+    y_types = list(y_vars.values())
+
+    print(f"X and y: {X_headers, y_headers, X_types, y_types}")
     
     X = cf[X_headers]
     y = df[y_headers]

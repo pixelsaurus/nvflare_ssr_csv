@@ -13,7 +13,7 @@ RUN pip install -r requirements.txt
 
 COPY . /workspace/
 
-ENV PYTHONPATH=$PYTHONPATH:/workspace/app/code/
+ENV PYTHONPATH=/workspace/app/code/
 
 COPY ./jobs/ /workspace/jobs/
 COPY ./app/ /workspace/app/

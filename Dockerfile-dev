@@ -11,7 +11,7 @@ COPY requirements.txt /workspace/
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
-ENV PYTHONPATH=$PYTHONPATH:/workspace/app/code/
+ENV PYTHONPATH=/workspace/app/code/
 ENV NVFLARE_POC_WORKSPACE=/workspace/poc-workspace
 
 COPY . /workspace/
