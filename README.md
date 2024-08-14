@@ -4,16 +4,16 @@ COINSTAC/NVFlare Code for Single-Shot Regression (SSR) on CSV Based Data
 ### Example Parameters
 ```
 {
-    "Covariates": {
-        "MDD":"boolean",
-        "Age":"number",
-        "Sex":"string",
-        "ICV":"number"
-    },
     "Dependents": {
-        "L_hippo":"number",
-        "R_hippo":"number",
-        "Tot_hippo":"number"
+        "L_hippo":"int",
+        "R_hippo":"int",
+        "Tot_hippo":"int"
+    },
+    "Covariates": {
+        "MDD":"bool",
+        "Age":"int",
+        "Sex":"int",
+        "ICV":"int"
     },
     "Lambda": 0
 }
