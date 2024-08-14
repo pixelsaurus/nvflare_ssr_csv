@@ -19,12 +19,14 @@ class SSRExecutor(Executor):
     ) -> Shareable:
 
         if task_name == "local1":
+            save_logs([], 'logs.txt', fl_ctx)
             data_dir_path = get_data_dir_path(fl_ctx)
             result = local_1(fl_ctx, data_dir_path)
             site = fl_ctx.get_prop(FLContextKey.CLIENT_NAME)
             outgoing_shareable = Shareable()
             outgoing_shareable["result"] = result
             outgoing_shareable["result"]["site"] = site
+            save_logs(result['logs'], 'logs.txt', fl_ctx)
             return outgoing_shareable
         
         if task_name == "local2":
@@ -33,12 +35,22 @@ class SSRExecutor(Executor):
             outgoing_shareable = Shareable()
             outgoing_shareable["result"] = result
             outgoing_shareable["result"]["site"] = fl_ctx.get_prop(FLContextKey.CLIENT_NAME)
+            save_logs(result['logs'], 'logs.txt', fl_ctx)
             return outgoing_shareable
         
         if task_name == "local3":
             results_dir = get_results_dir_path(fl_ctx)
             print(f"\nSaving results to: {results_dir}\n")
+            save_logs([f"\nSaving results to: {results_dir}\n"], 'logs.txt', fl_ctx)
             save_results_to_file(shareable, 'index.html', fl_ctx)
+
+def save_logs(logs: list, file_name: str, fl_ctx: FLContext):
+    results_dir = get_results_dir_path(fl_ctx)
+    results_file = os.path.join(results_dir, file_name)
+    with open(results_file, "a+") as f:
+        logsStr = '\n'.join(logs)
+        print(logsStr, file=f)
+ 
     
 def save_results_to_file(results: dict, file_name: str, fl_ctx: FLContext):
     results_dir = get_results_dir_path(fl_ctx)

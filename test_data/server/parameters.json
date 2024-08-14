@@ -1,14 +1,14 @@
 {
     "Dependents": {
-        "L_hippo":"number",
-        "R_hippo":"number",
-        "Tot_hippo":"number"
+        "L_hippo":"int",
+        "R_hippo":"int",
+        "Tot_hippo":"int"
     },
     "Covariates": {
-      "MDD":"boolean",
-      "Age":"number",
-      "Sex":"string",
-      "ICV":"number"
+        "MDD":"bool",
+        "Age":"int",
+        "Sex":"int",
+        "ICV":"int"
     },
     "Lambda": 0
-  }
+}

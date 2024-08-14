@@ -13,7 +13,7 @@ class SSRWorkflow(Controller):
         self,
         aggregator_id="aggregator",
         min_clients: int = 2,
-        num_rounds: int = 2,
+        num_rounds: int = 1,
         start_round: int = 0,
         wait_time_after_min_received: int = 10,
         train_timeout: int = 0,
