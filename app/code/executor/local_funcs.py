@@ -94,6 +94,8 @@ def local_1(fl_ctx, data_dir_path):
     printAndAddToLogs(f"Validation done. sending to remote...")
 
     result = {"input": output_dict, "cache": cache_dict, "logs": logs}
+
+    printAndAddToLogs(f"- Sending Packet to Remote: {result}")
     
     return result
 

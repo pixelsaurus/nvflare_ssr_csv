@@ -1,6 +1,6 @@
 __pycache__/
 *.py[cod]
 simulator_workspace/
-test_results/simulate_job/
+test_output/simulate_job/
 poc-workspace/
 .DS_Store

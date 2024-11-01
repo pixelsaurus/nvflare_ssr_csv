@@ -60,35 +60,29 @@ def save_results_to_file(results: dict, file_name: str, fl_ctx: FLContext):
 
 
 def get_results_dir_path(fl_ctx: FLContext) -> str:
-    """
-    Determines the appropriate results directory path for the federated learning application by checking
-    if in production, simulator, or POC (Proof of Concept) mode.
-    """
-
-    # Define paths for production (from environment), simulator, and POC modes.
+    """Determine and return the output directory path based on the available paths."""
     job_id = fl_ctx.get_job_id()
     site_name = fl_ctx.get_prop(FLContextKey.CLIENT_NAME)
-
-    production_path = os.getenv("RESULTS_DIR")
-    simulator_base_path = os.path.abspath(
-        os.path.join(os.getcwd(), "../../../test_results"))
-    poc_base_path = os.path.abspath(os.path.join(
-        os.getcwd(), "../../../../test_results"))
-    simulator_path = os.path.join(simulator_base_path, job_id, site_name)
-    poc_path = os.path.join(poc_base_path, job_id, site_name)
-
-    # Check for the environment path first, then simulator, and lastly POC path.
-    if production_path:
+    
+    # Production path (check environment variable or default to /workspace)
+    production_path = os.getenv("OUTPUT_DIR", "/workspace/output")
+    if os.path.exists(production_path):
         return production_path
-    if os.path.exists(simulator_base_path):
+    
+    # Simulator path
+    simulator_path = os.path.abspath(os.path.join(os.getcwd(), "../../../test_output", job_id, site_name))
+    if os.path.exists(simulator_path):
         os.makedirs(simulator_path, exist_ok=True)
         return simulator_path
-    if os.path.exists(poc_base_path):
+    
+    # POC path
+    poc_path = os.path.abspath(os.path.join(os.getcwd(), "../../../../test_output", job_id, site_name))
+    if os.path.exists(poc_path):
         os.makedirs(poc_path, exist_ok=True)
         return poc_path
-
-    # Raise an error if no path is found.
-    raise FileNotFoundError("Results directory path could not be determined.")
+    
+    # Raise an error if no path is found
+    raise FileNotFoundError("output directory path could not be determined.")
 
 
 def get_data_dir_path(fl_ctx: FLContext) -> str:

@@ -31,5 +31,5 @@ nvflare simulator -c site1,site2 ./jobs/job
 # View the results
 Navigate to:
 ```
-./test_results/simulate_job
+./test_output/simulate_job
 ```

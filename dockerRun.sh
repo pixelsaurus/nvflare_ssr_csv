@@ -3,4 +3,4 @@ docker run --rm -it \
     --name flare \
     -v /$(pwd):/workspace \
     -w //workspace \
-    nvflare-pt:latest
+    nvflare-ssr-csv:latest

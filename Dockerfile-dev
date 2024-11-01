@@ -6,14 +6,13 @@ RUN python3 -m pip install nvflare==2.4.0
 
 WORKDIR /workspace/
 
-# Copy the current directory contents into the container
-COPY requirements.txt /workspace/
-# Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+# Copy the requirements.txt file
+COPY ./requirements.txt /workspace/requirements.txt
+
+# Install dependencies from requirements.txt
+RUN python3 -m pip install -r /workspace/requirements.txt
 
 ENV PYTHONPATH=/workspace/app/code/
 ENV NVFLARE_POC_WORKSPACE=/workspace/poc-workspace
-
-COPY . /workspace/
 
 CMD ["/bin/bash"]
